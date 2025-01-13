@@ -31,8 +31,8 @@ final class ConwayPVP {
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setLayout(new BorderLayout());
 			JPanel controls = new JPanel();
-			ConwayPanel conwayPane = new ConwayPanel();
-			JButton step = new JButton("Step"), playPause = new JButton("Play/Pause");
+			ConwayPanel conwayPane = new ConwayPanel(64, 64);
+			JButton step = new JButton("Step"), playPause = new JButton("Play/Pause"), clear = new JButton("Clear");
 			step.addActionListener(e -> conwayPane.step());
 			controls.add(step);
 			Timer time = new Timer(INIT_DELAY, e -> conwayPane.step());
@@ -48,6 +48,8 @@ final class ConwayPVP {
 			delay.setPreferredSize(new Dimension(50, delay.getPreferredSize().height));
 			delay.addChangeListener(e -> time.setDelay((int) delay.getValue()));
 			controls.add(delay);
+			clear.addActionListener(e -> conwayPane.clear());
+			controls.add(clear);
 			frame.add(controls, BorderLayout.NORTH);
 			frame.add(conwayPane, BorderLayout.CENTER);
 			frame.pack();
@@ -60,13 +62,14 @@ final class ConwayPVP {
 
 		private static final byte CELL_W = 16;
 
-		private final boolean[][] grid = new boolean[50][50];
+		private boolean[][] grid;
 		private HashSet<Point> qHash = new HashSet<>();
 		private Queue<Point> que = new LinkedList<>();
 
-		private ConwayPanel() {
+		private ConwayPanel(int gridW, int gridH) {
 			super();
-			setPreferredSize(new Dimension(grid.length * CELL_W, grid[0].length * CELL_W));
+			setPreferredSize(
+					new Dimension((grid = new boolean[gridW][gridH]).length * CELL_W, grid[0].length * CELL_W));
 			MouseAdapter adapter = new MouseAdapter() {
 
 				private static final Point P_NULL = new Point(-1, -1);
@@ -145,6 +148,12 @@ final class ConwayPVP {
 				for (byte dy = -1; dy != 2; ++dy)
 					if (dx != 0 || dy != 0)
 						c.accept(new Point(Math.floorMod(x + dx, grid.length), Math.floorMod(y + dy, grid[0].length)));
+		}
+
+		private void clear() {
+			grid = new boolean[grid.length][grid[0].length];
+			qHash.clear();
+			que.clear();
 		}
 
 		private static void offer(Point p, HashSet<Point> qh, Queue<Point> q) {
