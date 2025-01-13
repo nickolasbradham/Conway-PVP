@@ -125,7 +125,6 @@ final class ConwayPVP {
 			HashSet<Point> newQHash = new HashSet<>();
 			while (!que.isEmpty()) {
 				Point p = que.poll();
-				qHash.remove(p);
 				byte[] count = { 0 };
 				forNeighbors(p.x, p.y, n -> {
 					if (grid[n.x][n.y])
