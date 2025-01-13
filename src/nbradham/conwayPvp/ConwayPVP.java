@@ -112,8 +112,8 @@ final class ConwayPVP {
 
 		@Override
 		public void paint(Graphics g) {
-			for (byte x = 0; x < grid.length; ++x)
-				for (byte y = 0; y < grid[x].length; ++y) {
+			for (short x = 0; x < grid.length; ++x)
+				for (short y = 0; y < grid[x].length; ++y) {
 					g.setColor(grid[x][y] ? Color.BLACK : Color.WHITE);
 					g.fillRect(x * CELL_W, y * CELL_W, CELL_W, CELL_W);
 				}
