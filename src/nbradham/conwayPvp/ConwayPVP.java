@@ -20,6 +20,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.border.LineBorder;
 
 final class ConwayPVP {
 
@@ -31,7 +32,8 @@ final class ConwayPVP {
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setLayout(new BorderLayout());
 			JPanel controls = new JPanel();
-			ConwayPanel conwayPane = new ConwayPanel(64, 64);
+			ConwayPanel conwayPane = new ConwayPanel(50, 50);
+			conwayPane.setBorder(new LineBorder(Color.BLACK));
 			JButton step = new JButton("Step"), playPause = new JButton("Play/Pause"), clear = new JButton("Clear");
 			step.addActionListener(e -> conwayPane.step());
 			controls.add(step);
@@ -53,6 +55,7 @@ final class ConwayPVP {
 			frame.add(controls, BorderLayout.NORTH);
 			frame.add(conwayPane, BorderLayout.CENTER);
 			frame.pack();
+			frame.setResizable(false);
 			frame.setVisible(true);
 		});
 	}
@@ -88,12 +91,14 @@ final class ConwayPVP {
 
 				@Override
 				public void mouseDragged(MouseEvent e) {
-					handle(e);
+					int x = e.getX(), y = e.getY();
+					if (x > -1 && x < getWidth() && y > -1 && y < getHeight())
+						handle(e);
 				}
 
 				private void handle(MouseEvent e) {
 					int x = e.getX() / CELL_W, y = e.getY() / CELL_W;
-					if ((x != last.x || y != last.y) && x > -1 && x < grid.length && y > -1 && y < grid[x].length) {
+					if (x != last.x || y != last.y) {
 						grid[x][y] = !grid[x][y];
 						offerNeighbors(x, y, qHash, que);
 						offer(last = new Point(x, y), qHash, que);
@@ -112,6 +117,7 @@ final class ConwayPVP {
 					g.setColor(grid[x][y] ? Color.BLACK : Color.WHITE);
 					g.fillRect(x * CELL_W, y * CELL_W, CELL_W, CELL_W);
 				}
+			super.paintBorder(g);
 		}
 
 		private void step() {
