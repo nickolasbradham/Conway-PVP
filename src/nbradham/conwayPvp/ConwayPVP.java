@@ -152,7 +152,7 @@ final class ConwayPVP {
 			for (byte dx = -1; dx != 2; ++dx)
 				for (byte dy = -1; dy != 2; ++dy)
 					if (dx != 0 || dy != 0)
-						c.accept(new Point(Math.floorMod(x + dx, grid.length), Math.floorMod(y + dy, grid[0].length)));
+						c.accept(new Point(floorMod(x + dx, grid.length), Math.floorMod(y + dy, grid[0].length)));
 		}
 
 		private void clear() {
@@ -164,6 +164,11 @@ final class ConwayPVP {
 		private static void offer(Point p, HashSet<Point> qh, Queue<Point> q) {
 			if (qh.add(p))
 				q.offer(p);
+		}
+
+		private static int floorMod(int x, int y) {
+			final int r = x % y;
+			return (x ^ y) < 0 && r != 0 ? r + y : r;
 		}
 	}
 }
