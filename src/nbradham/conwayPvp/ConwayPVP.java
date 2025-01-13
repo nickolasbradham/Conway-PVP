@@ -32,7 +32,7 @@ final class ConwayPVP {
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setLayout(new BorderLayout());
 			JPanel controls = new JPanel();
-			ConwayPanel conwayPane = new ConwayPanel(50, 50);
+			ConwayPanel conwayPane = new ConwayPanel(100, 100);
 			conwayPane.setBorder(new LineBorder(Color.BLACK));
 			JButton step = new JButton("Step"), playPause = new JButton("Play/Pause"), clear = new JButton("Clear");
 			step.addActionListener(e -> conwayPane.step());
@@ -63,7 +63,7 @@ final class ConwayPVP {
 	private static final class ConwayPanel extends JPanel {
 		private static final long serialVersionUID = 1L;
 
-		private static final byte CELL_W = 16;
+		private static final byte CELL_W = 8;
 
 		private boolean[][] grid;
 		private HashSet<Point> qHash = new HashSet<>();
@@ -159,6 +159,7 @@ final class ConwayPVP {
 			grid = new boolean[grid.length][grid[0].length];
 			qHash.clear();
 			que.clear();
+			repaint();
 		}
 
 		private static void offer(Point p, HashSet<Point> qh, Queue<Point> q) {
