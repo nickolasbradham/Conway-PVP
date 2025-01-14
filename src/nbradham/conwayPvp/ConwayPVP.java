@@ -50,7 +50,10 @@ final class ConwayPVP {
 			delay.setPreferredSize(new Dimension(50, delay.getPreferredSize().height));
 			delay.addChangeListener(e -> time.setDelay((int) delay.getValue()));
 			controls.add(delay);
-			clear.addActionListener(e -> conwayPane.clear());
+			clear.addActionListener(e -> {
+				conwayPane.clear();
+				time.stop();
+			});
 			controls.add(clear);
 			frame.add(controls, BorderLayout.NORTH);
 			frame.add(conwayPane, BorderLayout.CENTER);
